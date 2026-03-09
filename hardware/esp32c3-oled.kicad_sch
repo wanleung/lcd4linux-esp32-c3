@@ -1,0 +1,64 @@
+(kicad_sch (version 20211123) (generator eeschema)
+
+  (uuid a1b2c3d4-e5f6-7890-abcd-ef1234567890)
+
+  (paper "A4")
+
+  (lib_symbols
+    (symbol "MCU_Module:ESP32-C3-WROOM-02" (in_bom yes) (on_board yes)
+      (property "Reference" "U" (id 0) (at 0 12.7 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Value" "ESP32-C3-WROOM-02" (id 1) (at 0 10.16 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Footprint" "RF_Module:ESP32-C3-WROOM-02" (id 2) (at 0 0 0)
+        (effects (font (size 1.27 1.27)) hide)
+      )
+    )
+    (symbol "Display_Character:OLED-128x32-I2C" (in_bom yes) (on_board yes)
+      (property "Reference" "DISP" (id 0) (at 0 7.62 0)
+        (effects (font (size 1.27 1.27)))
+      )
+      (property "Value" "OLED-128x32-I2C" (id 1) (at 0 5.08 0)
+        (effects (font (size 1.27 1.27)))
+      )
+    )
+  )
+
+  (title "ESP32-C3 OLED Display - LCD4Linux")
+  (date "2026-03-09")
+  (rev "1.0")
+  (company "")
+  (comment 1 "128x32 I2C OLED with ESP32-C3")
+  (comment 2 "USB Serial communication for LCD4Linux")
+  (comment 3 "")
+  (comment 4 "")
+
+  (symbol (lib_id "MCU_Module:ESP32-C3-WROOM-02") (at 100 100 0) (unit 1)
+    (in_bom yes) (on_board yes)
+    (uuid 11111111-2222-3333-4444-555555555555)
+    (property "Reference" "U1" (id 0) (at 100 120 0))
+    (property "Value" "ESP32-C3-WROOM-02" (id 1) (at 100 117 0))
+  )
+
+  (symbol (lib_id "Display_Character:OLED-128x32-I2C") (at 150 100 0) (unit 1)
+    (in_bom yes) (on_board yes)
+    (uuid 22222222-3333-4444-5555-666666666666)
+    (property "Reference" "DISP1" (id 0) (at 150 110 0))
+    (property "Value" "OLED-128x32-I2C" (id 1) (at 150 107 0))
+  )
+
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+
+  (symbol_instances
+    (path "/11111111-2222-3333-4444-555555555555"
+      (reference "U1") (unit 1) (value "ESP32-C3-WROOM-02") (footprint "RF_Module:ESP32-C3-WROOM-02")
+    )
+    (path "/22222222-3333-4444-5555-666666666666"
+      (reference "DISP1") (unit 1) (value "OLED-128x32-I2C") (footprint "Display:OLED-128x32-I2C")
+    )
+  )
+)

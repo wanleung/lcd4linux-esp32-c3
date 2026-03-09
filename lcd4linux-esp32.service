@@ -1,0 +1,53 @@
+# Systemd service for LCD4Linux ESP32-C3 Bridge
+#
+# Installation:
+# 1. Copy this file to /etc/systemd/system/
+#    sudo cp lcd4linux-esp32.service /etc/systemd/system/
+#
+# 2. Edit the paths and user in this file if needed
+#    sudo nano /etc/systemd/system/lcd4linux-esp32.service
+#
+# 3. Edit ExecStart to point to your lcd4linux-bridge.py script
+#    and set the correct serial port
+#
+# 4. Reload systemd
+#    sudo systemctl daemon-reload
+#
+# 5. Enable and start the service
+#    sudo systemctl enable lcd4linux-esp32.service
+#    sudo systemctl start lcd4linux-esp32.service
+#
+# 6. Check status
+#    sudo systemctl status lcd4linux-esp32.service
+#
+# 7. View logs
+#    sudo journalctl -u lcd4linux-esp32.service -f
+
+[Unit]
+Description=LCD4Linux ESP32-C3 OLED Display Bridge
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=wanleung
+Group=dialout
+
+# Change this path to your actual script location
+WorkingDirectory=/home/wanleung/Projects/linux4lcd-esp-c3
+ExecStart=/home/wanleung/Projects/linux4lcd-esp-c3/lcd4linux-bridge.py --port /dev/ttyACM0 --mode system --interval 1.0
+
+# Restart on failure
+Restart=on-failure
+RestartSec=5
+
+# Standard output/error
+StandardOutput=journal
+StandardError=journal
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
