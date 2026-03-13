@@ -2,6 +2,9 @@
  * Configuration file for LCD4Linux ESP32-C3 Driver
  * 
  * Modify these settings according to your hardware setup
+ * 
+ * Copyright (C) 2024-2026 Wan Leung Wong
+ * Licensed under GNU GPL v3 or later
  */
 
 #ifndef CONFIG_H

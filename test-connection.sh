@@ -1,6 +1,9 @@
 #!/bin/bash
 # Test script for LCD4Linux ESP32-C3 setup
 # This script helps verify that the ESP32-C3 is properly connected and responding
+#
+# Copyright (C) 2024-2026 Wan Leung Wong
+# Licensed under GNU GPL v3 or later
 
 # Colors for output
 RED='\033[0;31m'

@@ -3,6 +3,9 @@
 Quick Bluetooth connection test for ESP32-C3 display
 
 This script quickly tests if you can connect to your ESP32 via Bluetooth.
+
+Copyright (C) 2024-2026 Wan Leung Wong
+Licensed under GNU GPL v3 or later
 """
 
 import asyncio

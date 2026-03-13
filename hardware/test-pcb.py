@@ -2,6 +2,9 @@
 """
 PCB Testing and Verification Script
 Tests ESP32-C3 OLED board functionality
+
+Copyright (C) 2024-2026 Wan Leung Wong
+Licensed under GNU GPL v3 or later
 """
 
 import serial

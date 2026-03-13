@@ -211,7 +211,20 @@ ESP32-C3 available GPIO pins:
 
 ## License
 
-This project is provided as-is for use with lcd4linux.
+This project is licensed under **GNU General Public License v3 or later** (GPL-3.0-or-later).
+
+See the [LICENSE](LICENSE) file for full license text.
+
+### What this means:
+- ✅ Free to use, modify, and distribute
+- ✅ Source code must remain open
+- ✅ Modifications must also be GPL-3.0-or-later
+- ✅ Commercial use allowed
+
+## Author
+
+**Wan Leung Wong**
+- Copyright © 2024-2026
 
 ## Credits
 

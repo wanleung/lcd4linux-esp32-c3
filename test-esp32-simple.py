@@ -2,6 +2,9 @@
 """
 Simple test to debug ESP32 communication
 Shows exactly what is sent and received
+
+Copyright (C) 2024-2026 Wan Leung Wong
+Licensed under GNU GPL v3 or later
 """
 
 import serial
