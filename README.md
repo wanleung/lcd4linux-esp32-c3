@@ -2,6 +2,23 @@
 
 Arduino project that enables ESP32-C3 to act as a display driver for lcd4linux daemon using an I2C OLED 128x32 display (SSD1306).
 
+## Connectivity Options
+
+This project supports **dual connectivity**:
+
+### 🔌 USB Serial (Default)
+- Fast and reliable wired connection
+- Plug-and-play via USB cable
+- Lower latency
+
+### 📡 Bluetooth BLE (Wireless)
+- **NEW!** Control display wirelessly via Bluetooth
+- No cables needed - works from ~10m distance
+- Same command protocol as Serial
+- 📖 Setup guide: [BLUETOOTH_SETUP.md](BLUETOOTH_SETUP.md)
+
+**Both connections work simultaneously!**
+
 ## Two Integration Options
 
 This project offers **two ways** to display system information:
@@ -10,8 +27,8 @@ This project offers **two ways** to display system information:
 - ✅ **Easy setup** - No compilation required
 - ✅ **Quick to customize** - Edit Python script directly
 - ✅ **Works immediately** - Just install Python dependencies
-- 📁 Uses: `lcd4linux-bridge.py`
-- 📖 Guide: [QUICKSTART.md](QUICKSTART.md)
+- 📁 Uses: `lcd4linux-bridge.py` (Serial) or `lcd4linux-bt-daemon.py` (Bluetooth)
+- 📖 Guide: [QUICKSTART.md](QUICKSTART.md) | [BLUETOOTH_SETUP.md](BLUETOOTH_SETUP.md)
 
 ### Option B: Native LCD4Linux Driver (Advanced)
 - ✅ **Lower CPU usage** - Native C code

@@ -43,10 +43,13 @@ class ESP32Display:
         if not ready:
             print("Warning: ESP32 not ready, continuing anyway...")
     
-    def send_command(self, cmd):
-        """Send a command to ESP32 and wait for response"""
+    def send_command(self, cmd, wait_response=True):
+        """Send a command to ESP32 and optionally wait for response"""
         self.ser.write(f"{cmd}\n".encode('utf-8'))
         self.ser.flush()
+        
+        if not wait_response:
+            return "OK"
         
         # Wait for response
         timeout = time.time() + 1.0
@@ -58,16 +61,18 @@ class ESP32Display:
         return "TIMEOUT"
     
     def clear(self):
-        """Clear the display"""
-        return self.send_command("CLEAR")
+        """Clear the display (no wait for response - faster)"""
+        return self.send_command("CLEAR", wait_response=False)
     
     def text(self, x, y, size, text):
-        """Draw text at position (x,y) with specified size"""
+        """Draw text at position (x,y) with specified size (no wait - faster)"""
         # Escape colons in text
         text = text.replace(':', '\\:')
-        return self.send_command(f"TEXT:{x}:{y}:{size}:{text}")
+        return self.send_command(f"TEXT:{x}:{y}:{size}:{text}", wait_response=False)
     
     def display(self):
+        """Update the physical display (wait for response to ensure completion)"""
+        return self.send_command("DISPLAY", wait_response=True)
         """Update the physical display"""
         return self.send_command("DISPLAY")
     
@@ -83,9 +88,13 @@ class ESP32Display:
         """Draw a line"""
         return self.send_command(f"LINE:{x0}:{y0}:{x1}:{y1}")
     
-    def rect(self, x, y, w, h, fill=0):
-        """Draw a rectangle"""
-        return self.send_command(f"RECT:{x}:{y}:{w}:{h}:{fill}")
+    def rect(self, x, y, w, h, fill=0, color=1):
+        """Draw a rectangle (color: 0=black, 1=white)"""
+        return self.send_command(f"RECT:{x}:{y}:{w}:{h}:{fill}:{color}", wait_response=False)
+    
+    def clear_area(self, x, y, w, h):
+        """Clear a specific area by drawing a black filled rectangle"""
+        return self.rect(x, y, w, h, fill=1, color=0)
     
     def circle(self, x, y, r, fill=0):
         """Draw a circle"""
@@ -97,8 +106,11 @@ class ESP32Display:
 
 
 def draw_system_info(display):
-    """Draw system information on display"""
-    display.clear()
+    """Draw system information on display (no full clear - just overwrite)"""
+    # Clear only the text areas with black rectangles (prevents full screen flash)
+    display.clear_area(0, 0, 128, 8)   # Clear line 1 area
+    display.clear_area(0, 10, 128, 8)  # Clear line 2 area  
+    display.clear_area(0, 20, 128, 12) # Clear line 3 area
     
     # Line 1: Current time
     current_time = datetime.datetime.now().strftime('%H:%M:%S')
@@ -150,7 +162,7 @@ def main():
     parser.add_argument('--baud', type=int, default=115200, help='Baud rate (default: 115200)')
     parser.add_argument('--mode', choices=['system', 'custom', 'test'], default='system',
                         help='Display mode (default: system)')
-    parser.add_argument('--interval', type=float, default=1.0, help='Update interval in seconds (default: 1.0)')
+    parser.add_argument('--interval', type=float, default=2.5, help='Update interval in seconds (default: 2.5)')
     parser.add_argument('--once', action='store_true', help='Run once and exit')
     
     args = parser.parse_args()

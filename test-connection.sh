@@ -74,26 +74,40 @@ echo "Testing connection to ESP32-C3 on $PORT..."
 echo
 
 # Send PING command
-response=$(echo "PING" | timeout 2 python3 -c "
+response=$(timeout 5 python3 -c "
 import serial
 import sys
 import time
 
 try:
-    ser = serial.Serial('$PORT', 115200, timeout=2)
-    time.sleep(2)  # Wait for ESP32 to reset
+    ser = serial.Serial('$PORT', 115200, timeout=3)
+    time.sleep(3)  # Wait for ESP32 to initialize (BLE takes time)
     
-    # Clear any startup messages
+    # Clear any startup messages (including BLE init messages)
+    time.sleep(0.5)
     while ser.in_waiting:
-        ser.readline()
+        line = ser.readline()
+        # Print startup messages for debugging
+        # print(f'Startup: {line}', file=sys.stderr)
     
-    # Send PING
-    ser.write(b'PING\n')
+    # Send PING command
+    cmd = 'PING\n'
+    ser.write(cmd.encode('utf-8'))
     ser.flush()
     
-    # Read response
-    response = ser.readline().decode('utf-8').strip()
-    print(response)
+    # Wait and read response
+    time.sleep(0.5)
+    if ser.in_waiting:
+        response = ser.readline().decode('utf-8', errors='ignore').strip()
+        print(response)
+    else:
+        # Try waiting a bit longer
+        time.sleep(0.5)
+        if ser.in_waiting:
+            response = ser.readline().decode('utf-8', errors='ignore').strip()
+            print(response)
+        else:
+            print('NO_RESPONSE')
     
     ser.close()
 except Exception as e:
@@ -109,23 +123,25 @@ else
     echo "Response: $response"
     echo
     echo "Troubleshooting:"
-    echo "1. Check that the Arduino sketch is uploaded to ESP32-C3"
+    echo "1. Check that lcd4linux_esp32.ino is uploaded to ESP32-C3"
     echo "2. Verify USB cable is connected"
     echo "3. Check baud rate is set to 115200"
-    echo "4. Try pressing the reset button on ESP32-C3"
+    echo "4. Wait 5 seconds after reset (BLE initialization takes time)"
+    echo "5. Try pressing the reset button on ESP32-C3 and wait"
+    echo "6. Check Serial Monitor in Arduino IDE for error messages"
     exit 1
 fi
 
 # Test INFO command
 echo
 echo "Getting display info..."
-info=$(echo "INFO" | timeout 2 python3 -c "
+info=$(echo "INFO" | timeout 3 python3 -c "
 import serial
 import sys
 import time
 
 try:
-    ser = serial.Serial('$PORT', 115200, timeout=2)
+    ser = serial.Serial('$PORT', 115200, timeout=3)
     time.sleep(0.5)
     
     # Clear buffer
@@ -137,7 +153,14 @@ try:
     ser.flush()
     
     # Read response
+    time.sleep(0.3)
     response = ser.readline().decode('utf-8').strip()
+    
+    # If empty, try again
+    if not response:
+        time.sleep(0.5)
+        response = ser.readline().decode('utf-8').strip()
+    
     print(response)
     
     ser.close()

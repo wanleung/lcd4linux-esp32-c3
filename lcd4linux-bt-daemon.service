@@ -1,0 +1,21 @@
+[Unit]
+Description=LCD4Linux ESP32 Bluetooth BLE Daemon
+After=bluetooth.target
+Wants=bluetooth.target
+
+[Service]
+Type=simple
+User=%i
+WorkingDirectory=/home/%i/Projects/lcd4linux_esp32
+ExecStart=/usr/bin/python3 /home/%i/Projects/lcd4linux_esp32/lcd4linux-bt-daemon.py --mode daemon --name LCD4Linux-ESP32
+Restart=on-failure
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+# Security hardening
+PrivateTmp=yes
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target

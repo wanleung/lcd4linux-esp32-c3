@@ -13,6 +13,7 @@
 #define SCREEN_HEIGHT 32
 
 // OLED I2C address (usually 0x3C for 128x32)
+// Try 0x3D if display is blank
 #define SCREEN_ADDRESS 0x3C
 
 // OLED reset pin (-1 if sharing Arduino reset pin)
@@ -23,11 +24,11 @@
 // Default I2C pins for ESP32-C3
 // You can change these to any available GPIO pins
 
-// SDA (Data line) - Default GPIO8
-#define I2C_SDA 8
+// SDA (Data line) - Try GPIO8 if GPIO3 doesn't work
+#define I2C_SDA 3
 
-// SCL (Clock line) - Default GPIO9  
-#define I2C_SCL 9
+// SCL (Clock line) - Try GPIO9 if GPIO4 doesn't work  
+#define I2C_SCL 4
 
 /*
  * Alternative ESP32-C3 GPIO pins you can use:
@@ -46,6 +47,17 @@
  * On ESP32-C3, USB CDC (USB Serial) is available on GPIO18/GPIO19
  * This is automatically handled by the Serial object in Arduino
  * No need to specify USB pins manually
+ */
+
+
+// ===== BLUETOOTH BLE SETTINGS =====
+// BLE device name (will appear when scanning for devices)
+#define BLE_DEVICE_NAME "LCD4Linux-ESP32"
+
+/*
+ * The ESP32-C3 supports Bluetooth 5.0 LE
+ * This device will advertise as a BLE UART service
+ * Compatible with Nordic UART Service (NUS)
  */
 
 
